@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="sklep internetowy">
+    <meta name="author" content="BL, KD">
+    <title>Strona główna</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Rozwiń</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Allewro</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="index.html">Strona główna</a>
+                    </li>
+                    <li>
+                        <a href="register.html">Rejestracja</a>
+                    </li>
+                    <li>
+                        <a href="login.html">Logowanie</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row main">
+            <div class="panel-heading">
+               <div class="panel-title text-center">
+                    <h1 class="title">Tworzenie nowego konta</h1>
+                    <hr />
+                </div>
+            </div> 
+            <div class="main-login main-center col-lg-offset-3 col-lg-6">
+                <form class="form-horizontal" method="post" action="#">
+                    
+                    <div class="form-group">
+                        <label for="name" class="cols-sm-2 control-label">Imię</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="name" id="name"  placeholder="Wpisz imię"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastname" class="cols-sm-2 control-label">Nazwisko</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="lastname" id="lastname"  placeholder="Wpisz nazwisko"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address" class="cols-sm-2 control-label">Adres</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-home fa" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="address" id="address"  placeholder="Wpisz adres odbioru przesyłek"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="voivodeship" class="cols-sm-2 control-label">Województwo</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <select class="form-control" id="voivodeship">
+                                    <option>Dolnośląskie</option>
+                                    <option>Kujawsko-pomorskie</option>
+                                    <option>Lubelskie</option>
+                                    <option>Łódzkie</option>
+                                    <option>Małopolskie</option>
+                                    <option>Mazowieckie</option>
+                                    <option>Opolskie</option>
+                                    <option>Podkarpackie</option>
+                                    <option>Podlaskie</option>
+                                    <option>Pomorskie</option>
+                                    <option>Śląskie</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender" class="cols-sm-2 control-label">Płeć</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                            <label class="radio-inline">
+                                <input type="radio" name="x_Gender" value="M" class="required" title="*">
+                                Mężczyzna
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="x_Gender" value="F" class="required" title="*">
+                              Kobieta
+                            </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="cols-sm-2 control-label">E-mail</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="email" id="email"  placeholder="Wpisz e-mail"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username" class="cols-sm-2 control-label">Nazwa użytkownika</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="username" id="username"  placeholder="Wpisz nazwę użytkownika"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="cols-sm-2 control-label">Hasło</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                <input type="password" class="form-control" name="password" id="password"  placeholder="Wpisz hasło"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password2" class="cols-sm-2 control-label">Powtórz hasło</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                <input type="password" class="form-control" name="password2" id="password2"  placeholder="Powtórz hasło"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm" class="cols-sm-2 control-label">Regulamin i oferty marketingowe</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <div class="checkbox">
+                                    <label><input type="checkbox" name="accept_rules" value="">Akceptuję <a href="#">regulamin</a></label>
+                                </div>
+                                <div class="checkbox">
+                                    <label><input type="checkbox" name="accept_mails" value="">Zgadzam się na otrzymywanie maili z ofertami marketingowymi</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label><input type="checkbox" name="accept_personal_data" value="">Zgadzam się na przetwarzanie moich danych osobowych w celach marketingowych</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary btn-lg btn-block login-button">Stwórz konto</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+            <div class="text-center bg-primary">
+                <p>Copyright &copy; Allewro 2018</p>
+            </div>
+    </footer>
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</body>
+</html>
