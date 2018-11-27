@@ -352,8 +352,9 @@ function getIpAddress()
 
                 <div class="form-group">
                     <button type="submit" name="send_registration_form"
-                            class="btn btn-primary btn-lg btn-block login-button">Stwórz konto
+                            class="btn btn-primary btn-lg btn-block login-button" id="submit">Stwórz konto
                     </button>
+                    <label for="submit"></label>
                 </div>
             </form>
         </div>
@@ -367,5 +368,6 @@ function getIpAddress()
 </footer>
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script src="js/validate.js"></script>
 </body>
 </html>
