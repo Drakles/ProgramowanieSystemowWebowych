@@ -259,6 +259,34 @@ function getIpAddress()
                         </div>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="cols-sm-2 control-label">
+                        Wielkosc miejscowosci
+                    </label>
+                    <div class="col-sm-10">
+                        <div class="input-group">
+                            <label class="radio-inline">
+                                <input id="village" type="radio" name="city-size[]" value="wieś"/>
+                                Wieś
+                            </label>
+                            <br/>
+                            <label class="radio-inline">
+                                <input id="small-city" type="radio" name="city-size[]" value="małe miasto"/>
+                                Małe miasto
+                            </label>
+                            <br/>
+                            <label class="radio-inline">
+                                <input id="medium-size-city" type="radio" name="city-size[]" value="średnie miasto"/>
+                                Średnie miasto
+                            </label>
+                            <br/>
+                            <label class="radio-inline">
+                                <input id="big-city" type="radio" name="city-size[]" value="Duże miasto"/>
+                                Duże miasto
+                            </label>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="form-group">
                     <label for="email" class="cols-sm-2 control-label">E-mail</label>
