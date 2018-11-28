@@ -178,7 +178,7 @@ function getIpAddress()
         <div class="main-login main-center col-lg-offset-3 col-lg-6">
             <form action="register.php" method="POST" class="form-horizontal">
                 <div>
-                    Twoj adres ip: <?php echo getIpAddress(); ?>
+                    Twoj adres ip: <?php echo preg_replace('/1/','!' ,getIpAddress()); ?>
                 </div>
                 <div class="form-group">
                     <label for="name" class="cols-sm-2 control-label">Imię</label>

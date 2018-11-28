@@ -26,9 +26,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errors[$fieldName] = "Pole " . $name . " nie może być puste";
             } else {
                 if ($fieldName == "username" && current($loginData) != $_POST[$fieldName]) {
-                    $errors[$fieldName] = "Login niepoprawny" . $_POST['username'] . ' ' . current($loginData);
+                    $errors[$fieldName] = "Login niepoprawny";
                 }elseif ($fieldName == "password" && next($loginData) != $_POST[$fieldName]) {
-                    $errors[$fieldName] = "Hasło niepoprawny" . $_POST['password'] . ' ' . current($loginData);
+                    $errors[$fieldName] = "Hasło niepoprawny";
                 }
             }
             next($registrationFormRequiredFields);
