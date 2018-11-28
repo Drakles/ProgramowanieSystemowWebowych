@@ -101,10 +101,10 @@ function escapeCharacters($in)
 
 function getIpAddress()
 {
-    if (!empty($_SERVER['HTTP_CLIENT_IP']))   //check ip from share internet
+    if (!empty($_SERVER['HTTP_CLIENT_IP']))
     {
         $ip = $_SERVER['HTTP_CLIENT_IP'];
-    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))   //to check ip is pass from proxy
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
     {
         $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
     } else {
@@ -151,7 +151,7 @@ function getIpAddress()
                     <a href="register.php">Rejestracja</a>
                 </li>
                 <li>
-                    <a href="login.html">Logowanie</a>
+                    <a href="login.php">Logowanie</a>
                 </li>
             </ul>
         </div>
