@@ -31,6 +31,7 @@ $fields = array(
 );
 
 
+$success = true;
 define("PASSWORD_MIN_LENGTH", 6);
 $errors = array();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -47,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         foreach ($registrationFormRequiredFields as $fieldName) {
+            // $_POST['$fieldName'] = escapeCharacters($_POST[$fieldName]);
             $data = escapeCharacters($_POST[$fieldName]);
 
             if (empty($data)) {
@@ -66,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors['name'] = 'Imię może zawierać tylko litery, cyfry i białe znaki';
         }
 
-        if (!preg_match('/^[a-zA-Z0-9\s]+$/', $_POST['name'])) {
+        if (!preg_match('/^[a-zA-Z0-9\s]+$/', $_POST['username'])) {
             $errors['username'] = 'Nazwa użytkownika może zawierać tylko litery, cyfry i białe znaki';
         }
 
@@ -78,17 +80,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors['address'] = 'Adres może zawierać tylko litery, cyfry i białe znaki';
         }
 
-        if (!(preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $data))) {
+        if (!(preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $_POST['birth_day']))) {
             $errors['birth_date'] = 'Data musi mieć format YYYY-MM-DD';
         }
 
-        if (!(preg_match("/^[MK]{1}$/", $errors['gender']))) {
+        if (!(preg_match("/^[MK]{1}$/", $_POST['gender']))) {
             $errors['gender'] = 'Płeć to Mężczyzna lub Kobieta';
         }
 
-        if (!(preg_match("'/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/'", $errors['email']))) {
+        if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
             $errors['email'] = 'Email ma nieprawidłowy format';
         }
+
+        foreach ($errors as $error) {
+            if (!empty($error)) {
+                global $success;
+                $success = false;
+                break;
+            }
+        }
+
+        if ($success) {
+            require 'connect.php';
+            $sql = "SELECT COUNT(username) AS count_username FROM users WHERE username = :username";
+            $statement = $pdo->prepare($sql);
+            $statement->bindValue(':username', $_POST['username']);
+            $statement->execute();
+            $row = $statement->fetch();
+            if($row['count_username'] > 0){
+                $errors['exist'] = 'Podana nazwa użytkownika jest już zajęta';
+            } else {
+                $passwordHash = password_hash($_POST['password'], PASSWORD_BCRYPT);
+                $sql = "INSERT INTO users (username, password, name, lastname, address, gender, email) 
+                VALUES (:username, :password, :name, :lastname, :address, :gender, :email)";
+                $statement = $pdo->prepare($sql);
+                $statement->bindValue(':username', $_POST['username']);
+                $statement->bindValue(':password', $passwordHash);
+                $statement->bindValue(':name', $_POST['name']);
+                $statement->bindValue(':lastname', $_POST['lastname']);
+                $statement->bindValue(':address', $_POST['address']);
+                $statement->bindValue(':gender', $_POST['gender']);
+                $statement->bindValue(':email', $_POST['email']);
+                $result = $statement->execute();
+                if (!$result) {
+                    $errors['db'] = 'Wystąpił błąd podczas zapisu do bazy danych';
+                }
+            }
+        }
+
     } else {
         die("Nieprawidłowe parametry żądania");
     }
@@ -166,13 +205,14 @@ function getIpAddress()
             echo '<div class="alert alert-danger">
   					<strong>Błąd!</strong>  ' . $error . '
 					</div>';
-            global $success = false;
+            global $success;
+            $success = false;
         }
-        if ($success) {
-            echo '<div class="alert alert-info">
-            <strong>Informacja - </strong>  ' . 'Konto zostało utworzone, możesz się zalogować' . '
-            </div>';
-        }
+    }
+    if ($success) {
+        echo '<div class="alert alert-info">
+        <strong>Informacja - </strong>  ' . 'Konto zostało utworzone, możesz się zalogować' . '
+        </div>';
     }
     ?>
     <div class="row main">
