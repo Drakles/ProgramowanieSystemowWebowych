@@ -1,4 +1,9 @@
 <?php
+session_start();
+if (isset($_SESSION['user_id'])) {
+    header('Location: index.php');
+    die();
+}
 $errors = array();
 
 $registrationFormRequiredFields = array(
@@ -18,20 +23,41 @@ $loginData = array(
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['send_login_form'])) {
-        while ($fieldName = current($registrationFormRequiredFields)) {
-            $data = escapeCharacters($_POST[$fieldName]);
+        if (isset($_POST['username']) && isset($_POST['password'])) {
+            $username = escapeCharacters($_POST['username']);
+            $password = escapeCharacters($_POST['password']);
 
-            if (empty($data)) {
-                $name = $fields[$fieldName];
-                $errors[$fieldName] = "Pole " . $name . " nie może być puste";
-            } else {
-                if ($fieldName == "username" && current($loginData) != $_POST[$fieldName]) {
-                    $errors[$fieldName] = "Login niepoprawny";
-                }elseif ($fieldName == "password" && next($loginData) != $_POST[$fieldName]) {
-                    $errors[$fieldName] = "Hasło niepoprawny";
+            if (empty($username)) {
+                $errors['username'] = "Login jest pusty";
+            }
+
+            if (empty($password)) {
+                $errors['password'] = "Hasło jest puste";
+            }
+
+            if (!empty($password) && !empty($username)) {
+                require 'connect.php';
+                $sql = "SELECT id, username, password FROM users WHERE username = :username";
+                $statement = $pdo->prepare($sql);
+                $statement->bindValue(':username', $username);
+                $statement->execute();
+                $user = $statement->fetch();
+                if (!$user) {
+                    $errors['login_or_password'] = "Błędny login lub hasło";
+                } else {
+                    $isPasswordValid = password_verify($password, $user['password']);
+                    if($isPasswordValid){
+                        $_SESSION['user_id'] = $user['id'];
+                        $_SESSION['logged_in'] = true;
+                        header('Location: profile.php');
+                        exit;
+                    } else{
+                        $errors['login_or_password'] = "Błędny login lub hasło";
+                    }
                 }
             }
-            next($registrationFormRequiredFields);
+        } else {
+            die("Żądanie jest niepoprawne");
         }
 
     } else {
@@ -72,17 +98,23 @@ function escapeCharacters($in)
             <a class="navbar-brand" href="#">Allewro</a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li>
-                    <a href="index.html">Strona główna</a>
-                </li>
-                <li>
-                    <a href="register.php">Rejestracja</a>
-                </li>
-                <li>
-                    <a href="login.php">Logowanie</a>
-                </li>
-            </ul>
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="index.php">Strona główna</a>
+                    </li>
+                    <li>
+                        <a href="register.php">Rejestracja</a>
+                    </li>
+                    <?php
+                        if(!isset($_SESSION['user_id'])) {
+                            echo '<li><a href="login.php">Logowanie</a></li>';
+                        }
+                        else {
+                            echo '<li><a href="profile.php">Profil</a></li>';
+                            echo '<li><a href="logout.php">Wyloguj</a></li>';
+                        }
+                    ?>
+                </ul>
         </div>
     </div>
 </nav>

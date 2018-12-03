@@ -1,4 +1,5 @@
 <?php
+session_start();
 $registrationFormRequiredFields = array(
     "name",
     "lastname",
@@ -182,17 +183,23 @@ function getIpAddress()
             <a class="navbar-brand" href="#">Allewro</a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li>
-                    <a href="index.html">Strona główna</a>
-                </li>
-                <li>
-                    <a href="register.php">Rejestracja</a>
-                </li>
-                <li>
-                    <a href="login.php">Logowanie</a>
-                </li>
-            </ul>
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="index.php">Strona główna</a>
+                    </li>
+                    <li>
+                        <a href="register.php">Rejestracja</a>
+                    </li>
+                    <?php
+                        if(!isset($_SESSION['user_id'])) {
+                            echo '<li><a href="login.php">Logowanie</a></li>';
+                        }
+                        else {
+                            echo '<li><a href="profile.php">Profil</a></li>';
+                            echo '<li><a href="logout.php">Wyloguj</a></li>';
+                        }
+                    ?>
+                </ul>
         </div>
     </div>
 </nav>
@@ -209,7 +216,7 @@ function getIpAddress()
             $success = false;
         }
     }
-    if ($success) {
+    if ($success && $_SERVER['REQUEST_METHOD'] === 'POST') {
         echo '<div class="alert alert-info">
         <strong>Informacja - </strong>  ' . 'Konto zostało utworzone, możesz się zalogować' . '
         </div>';
