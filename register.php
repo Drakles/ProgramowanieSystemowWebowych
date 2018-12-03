@@ -160,11 +160,18 @@ function getIpAddress()
 
 <div class="container">
     <?php
+    $success = true;
     foreach ($errors as $error) {
         if (!empty($error)) {
             echo '<div class="alert alert-danger">
   					<strong>Błąd!</strong>  ' . $error . '
 					</div>';
+            global $success = false;
+        }
+        if ($success) {
+            echo '<div class="alert alert-info">
+            <strong>Informacja - </strong>  ' . 'Konto zostało utworzone, możesz się zalogować' . '
+            </div>';
         }
     }
     ?>
