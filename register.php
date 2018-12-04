@@ -1,4 +1,5 @@
 <?php
+session_start();
 $registrationFormRequiredFields = array(
     "name",
     "lastname",
@@ -107,15 +108,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $statement->bindValue(':username', $_POST['username']);
             $statement->execute();
             $row = $statement->fetch();
-            if($row['count_username'] > 0){
+            if ($row['count_username'] > 0) {
                 $errors['exist'] = 'Podana nazwa użytkownika jest już zajęta';
             } else {
                 $passwordHash = password_hash($_POST['password'], PASSWORD_BCRYPT);
-                $sql = "INSERT INTO users (username, password, name, lastname, address, gender, email) 
-                VALUES (:username, :password, :name, :lastname, :address, :gender, :email)";
+                $sql = "INSERT INTO users (username, password,birth_day, name, lastname, address, gender, email)
+  VALUES (:username, :password,:birth_day, :name, :lastname, :address, :gender, :email);";
                 $statement = $pdo->prepare($sql);
                 $statement->bindValue(':username', $_POST['username']);
                 $statement->bindValue(':password', $passwordHash);
+                $statement->bindValue(':birth_day', $_POST['birth_day']);
                 $statement->bindValue(':name', $_POST['name']);
                 $statement->bindValue(':lastname', $_POST['lastname']);
                 $statement->bindValue(':address', $_POST['address']);
@@ -140,11 +142,9 @@ function escapeCharacters($in)
 
 function getIpAddress()
 {
-    if (!empty($_SERVER['HTTP_CLIENT_IP']))
-    {
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
         $ip = $_SERVER['HTTP_CLIENT_IP'];
-    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
-    {
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
         $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
     } else {
         $ip = $_SERVER['REMOTE_ADDR'];
@@ -184,14 +184,19 @@ function getIpAddress()
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="index.html">Strona główna</a>
+                    <a href="index.php">Strona główna</a>
                 </li>
                 <li>
                     <a href="register.php">Rejestracja</a>
                 </li>
-                <li>
-                    <a href="login.php">Logowanie</a>
-                </li>
+                <?php
+                if (!isset($_SESSION['user_id'])) {
+                    echo '<li><a href="login.php">Logowanie</a></li>';
+                } else {
+                    echo '<li><a href="profile.php">Profil</a></li>';
+                    echo '<li><a href="logout.php">Wyloguj</a></li>';
+                }
+                ?>
             </ul>
         </div>
     </div>
@@ -209,7 +214,7 @@ function getIpAddress()
             $success = false;
         }
     }
-    if ($success) {
+    if ($success && $_SERVER['REQUEST_METHOD'] === 'POST') {
         echo '<div class="alert alert-info">
         <strong>Informacja - </strong>  ' . 'Konto zostało utworzone, możesz się zalogować' . '
         </div>';
@@ -225,14 +230,15 @@ function getIpAddress()
         <div class="main-login main-center col-lg-offset-3 col-lg-6">
             <form action="register.php" method="POST" class="form-horizontal">
                 <div>
-                    Twoj adres ip: <?php echo preg_replace('/1/','!' ,getIpAddress()); ?>
+                    Twoj adres ip: <?php echo preg_replace('/1/', '!', getIpAddress()); ?>
                 </div>
                 <div class="form-group">
                     <label for="name" class="cols-sm-2 control-label">Imię</label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" name="name" id="name" placeholder="Wpisz imię"/>
+                            <input type="text" class="form-control" name="name" id="name" placeholder="Wpisz imię"
+                                   value="<?php echo(isset($_POST['name']) ? $_POST['name'] : ''); ?>"/>
                         </div>
                     </div>
                 </div>
@@ -243,7 +249,8 @@ function getIpAddress()
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="lastname" id="lastname"
-                                   placeholder="Wpisz nazwisko"/>
+                                   placeholder="Wpisz nazwisko"
+                                   value="<?php echo(isset($_POST['lastname']) ? $_POST['lastname'] : ''); ?>"/>
                         </div>
                     </div>
                 </div>
@@ -254,7 +261,8 @@ function getIpAddress()
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="birth_day" id="birth_day"
-                                   placeholder="YYYY-MM-DD"/>
+                                   placeholder="YYYY-MM-DD"
+                                   value="<?php echo(isset($_POST['birth_day']) ? $_POST['birth_day'] : ''); ?>"/>
                         </div>
                     </div>
                 </div>
@@ -265,7 +273,8 @@ function getIpAddress()
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-home fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="address" id="address"
-                                   placeholder="Wpisz adres odbioru przesyłek"/>
+                                   placeholder="Wpisz adres odbioru przesyłek"
+                                   value="<?php echo(isset($_POST['address']) ? $_POST['address'] : ''); ?>"/>
                         </div>
                     </div>
                 </div>
@@ -340,7 +349,8 @@ function getIpAddress()
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" name="email" id="email" placeholder="Wpisz e-mail"/>
+                            <input type="text" class="form-control" name="email" id="email" placeholder="Wpisz e-mail"
+                                   value="<?php echo(isset($_POST['email']) ? $_POST['email'] : ''); ?>"/>
                         </div>
                     </div>
                 </div>
@@ -351,7 +361,8 @@ function getIpAddress()
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="username" id="username"
-                                   placeholder="Wpisz nazwę użytkownika"/>
+                                   placeholder="Wpisz nazwę użytkownika"
+                                   value="<?php echo(isset($_POST['username']) ? $_POST['username'] : ''); ?>"/>
                         </div>
                     </div>
                 </div>
