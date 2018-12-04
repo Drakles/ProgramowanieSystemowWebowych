@@ -112,11 +112,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errors['exist'] = 'Podana nazwa użytkownika jest już zajęta';
             } else {
                 $passwordHash = password_hash($_POST['password'], PASSWORD_BCRYPT);
-                $sql = "INSERT INTO users (username, password, name, lastname, address, gender, email) 
-                VALUES (:username, :password, :name, :lastname, :address, :gender, :email)";
+                $sql = "INSERT INTO users (username, password,birth_day, name, lastname, address, gender, email)
+  VALUES (:username, :password,:birth_day, :name, :lastname, :address, :gender, :email);";
                 $statement = $pdo->prepare($sql);
                 $statement->bindValue(':username', $_POST['username']);
                 $statement->bindValue(':password', $passwordHash);
+                $statement->bindValue(':birth_day', $_POST['birth_day']);
                 $statement->bindValue(':name', $_POST['name']);
                 $statement->bindValue(':lastname', $_POST['lastname']);
                 $statement->bindValue(':address', $_POST['address']);
