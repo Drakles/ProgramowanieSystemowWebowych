@@ -46,12 +46,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $errors['login_or_password'] = "Błędny login lub hasło";
                 } else {
                     $isPasswordValid = password_verify($password, $user['password']);
-                    if($isPasswordValid){
+                    if ($isPasswordValid) {
                         $_SESSION['user_id'] = $user['id'];
                         $_SESSION['logged_in'] = true;
                         header('Location: profile.php');
                         exit;
-                    } else{
+                    } else {
                         $errors['login_or_password'] = "Błędny login lub hasło";
                     }
                 }
@@ -98,23 +98,22 @@ function escapeCharacters($in)
             <a class="navbar-brand" href="#">Allewro</a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="index.php">Strona główna</a>
-                    </li>
-                    <li>
-                        <a href="register.php">Rejestracja</a>
-                    </li>
-                    <?php
-                        if(!isset($_SESSION['user_id'])) {
-                            echo '<li><a href="login.php">Logowanie</a></li>';
-                        }
-                        else {
-                            echo '<li><a href="profile.php">Profil</a></li>';
-                            echo '<li><a href="logout.php">Wyloguj</a></li>';
-                        }
-                    ?>
-                </ul>
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="index.php">Strona główna</a>
+                </li>
+                <li>
+                    <a href="register.php">Rejestracja</a>
+                </li>
+                <?php
+                if (!isset($_SESSION['user_id'])) {
+                    echo '<li><a href="login.php">Logowanie</a></li>';
+                } else {
+                    echo '<li><a href="profile.php">Profil</a></li>';
+                    echo '<li><a href="logout.php">Wyloguj</a></li>';
+                }
+                ?>
+            </ul>
         </div>
     </div>
 </nav>
@@ -144,7 +143,8 @@ function escapeCharacters($in)
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="username" id="username"
-                                   placeholder="Login"/>
+                                   placeholder="Login"
+                                   value="<?php echo(isset($_POST['username']) ? $_POST['username'] : ''); ?>"/>
                         </div>
                     </div>
                 </div>
