@@ -49,8 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if ($isPasswordValid) {
                         $_SESSION['user_id'] = $user['id'];
                         $_SESSION['logged_in'] = true;
+                        setcookie('last_user',$username,time()+99999999,"/");
                         header('Location: profile.php');
-                        exit;
+                        die();
                     } else {
                         $errors['login_or_password'] = "Błędny login lub hasło";
                     }
@@ -142,9 +143,12 @@ function escapeCharacters($in)
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" name="username" id="username"
+                            <input autocomplete="false"
+                                    type="text" class="form-control" name="username" id="username"
                                    placeholder="Login"
-                                   value="<?php echo(isset($_POST['username']) ? $_POST['username'] : ''); ?>"/>
+                                   value="<?php
+                                   echo(isset($_COOKIE['last_user']) ? $_COOKIE['last_user'] : '');
+                                   ?>"/>
                         </div>
                     </div>
                 </div>
@@ -154,7 +158,7 @@ function escapeCharacters($in)
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                            <input type="password" class="form-control" name="password" id="password"
+                            <input autocomplete="false" type="password" class="form-control" name="password" id="password"
                                    placeholder="Hasło"/>
                         </div>
                     </div>
