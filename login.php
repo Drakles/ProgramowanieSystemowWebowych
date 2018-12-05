@@ -131,7 +131,7 @@ function escapeCharacters($in)
     <div class="row main">
         <div class="panel-heading">
             <div class="panel-title text-center">
-                <h1 class="title">Tworzenie nowego konta</h1>
+                <h1 class="title">Logowanie</h1>
                 <hr/>
             </div>
         </div>
@@ -162,7 +162,7 @@ function escapeCharacters($in)
 
                 <div class="form-group">
                     <button type="submit" name="send_login_form"
-                            class="btn btn-primary btn-lg btn-block login-button" id="submit">Stwórz konto
+                            class="btn btn-primary btn-lg btn-block login-button" id="submit">Zaloguj sie
                     </button>
                     <label for="submit"></label>
                 </div>
